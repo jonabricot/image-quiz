@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from '@/components/Button.vue'
 import Container from '@/components/layout/Container.vue'
-import AnimatedSection from '@/components/Layout/AnimatedSection.vue'
+import AnimatedSection from '@/components/layout/AnimatedSection.vue'
 import {useRoute, useRouter} from "vue-router";
 import { useQuizStore } from '@/stores/quiz'
 
