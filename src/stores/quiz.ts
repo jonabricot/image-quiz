@@ -188,7 +188,9 @@ export const useQuizStore = defineStore('quiz', () => {
   }
 
   const score = computed(() => {
-    return answers.value.map((value, index) => value === questions.value[index].response ? 1 : 0).reduce((a, b) => a + b, 0)
+    return answers.value
+      .map((value, index) => value === questions.value[index].response ? 1 : 0)
+      .reduce((a: number, b: number) => a + b, 0)
   })
 
   const nextIndex = computed(() => index.value > -1 ? index.value + 1 : 0)

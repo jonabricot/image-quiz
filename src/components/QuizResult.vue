@@ -38,11 +38,11 @@ const scores = computed(() => {
   })
 })
 
-function isCurrentScore({min, max}) {
+function isCurrentScore({min, max}: {min: number, max:number}) {
   return store.score >= min && store.score <= max
 }
 
-function getScoreClasses(score) {
+function getScoreClasses(score: {min: number, max: number}) {
   return {
     'opacity-50 text-xs': !isCurrentScore(score),
     'py-4 text-xl': isCurrentScore(score)
