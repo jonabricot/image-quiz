@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { computed } from "vue";
+const availableOutlines = {
+  none: '',
+  default: 'outline-indigo-500',
+  success: 'outline-green-500',
+  error: 'outline-red-500',
+}
 
 const props = withDefaults(defineProps<{
   src: string;
-  orientation: string;
   scale: number;
   translate: number[];
-  outline: string;
+  outline: keyof typeof availableOutlines;
   muted: boolean;
   display: string;
 }>(), {
@@ -19,11 +24,7 @@ const computedTranslate = computed(() =>
 );
 
 const outlineBasis = 'outline outline-2 outline-offset-4 outline-solid'
-const availableOutlines = {
-  default: 'outline-indigo-500',
-  success: 'outline-green-500',
-  error: 'outline-red-500',
-}
+
 
 const computedOutline = computed(() => {
   if (availableOutlines.hasOwnProperty(props.outline)) {
@@ -37,9 +38,7 @@ const computedStyle = computed(() => {
   let ratio = "33%"
   if (props.display === 'result') {
     ratio = "60%"
-  } else if(props.orientation === "vertical") {
-    ratio = "300%"
-  }
+  } 
   return {
     "padding-bottom": ratio,
   }

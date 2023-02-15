@@ -5,16 +5,15 @@ import QuizContainer from '@/components/layout/QuizContainer.vue'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
-  orientation: string,
   answers: {src: string, scale: number, translate: number[]}[],
   response: number,
 }>()
 const emit = defineEmits(['save'])
 
-const selected = ref(null)
+const selected = ref<number | null>(null)
 const state = ref('idle')
 
-function select(index) {
+function select(index: number | null) {
   if (state.value === 'result') return
 
   if (index === null) {
@@ -33,11 +32,7 @@ function select(index) {
   selected.value = index
 }
 
-const computedClass = computed(() => ({
-  'grid-flow-col': props.orientation === 'vertical'
-}))
-
-function computedOutline(index) {
+function computedOutline(index: number) {
   if (selected.value !== index) {
     return 'none'
   }
@@ -53,7 +48,7 @@ function computedOutline(index) {
   return 'error'
 }
 
-function computedMuted(index) {
+function computedMuted(index: number) {
   if (state.value === 'result') {
     return props.response !== index
   }
@@ -65,7 +60,7 @@ function computedMuted(index) {
   return false
 }
 
-function computedSize(index) {
+function computedSize(index: number) {
   if (
     state.value === 'selected' && index === selected.value ||
     state.value === 'result' && index === props.response
@@ -81,12 +76,10 @@ function computedSize(index) {
 <template>
   <QuizContainer
     class="grid justify-items-center items-center gap-4"
-    :class="computedClass"
     :size="state === 'result' ? 'fluid' : 'normal'"
   >
     <template v-for="(answer, index) in answers" :key="`answser-${index}`">
       <QuizOption
-        :orientation="orientation"
         v-bind="answer"
         :outline="computedOutline(index)"
         :muted="computedMuted(index)"
