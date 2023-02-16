@@ -5,7 +5,7 @@ import QuizContainer from '@/components/layout/QuizContainer.vue'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
-  answers: {src: string, scale: number, translate: number[]}[],
+  answers: {src: string, transform: string}[],
   response: number,
   state: string
 }>()
