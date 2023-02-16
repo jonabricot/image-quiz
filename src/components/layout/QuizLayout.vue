@@ -10,9 +10,11 @@ const store = useQuizStore()
     <div class="flex-1 overflow-auto">
       <slot />
     </div>
-    <div class="grid gap-4">
-      <div v-if="store.state === 'result'" class="text-xs opacity-10 text-center px-4">*: Lolo n'a pas été consultée pendant la mise en place de ces gages. Arrangez-vous avec elle haha</div>
-      <QuizProgressBar />
+    <div class="relative">
+      <div class="absolute grid gap-4 bottom-full w-full mb-4">
+        <div v-if="store.state === 'result'" class="text-xs opacity-10 text-center px-4">*: Lolo n'a pas été consultée pendant la mise en place de ces gages. Arrangez-vous avec elle haha</div>
+        <QuizProgressBar />
+      </div>
       <QuizNavbar />
     </div>
   </div>

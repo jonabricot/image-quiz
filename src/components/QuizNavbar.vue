@@ -4,20 +4,30 @@ import Container from '@/components/layout/Container.vue'
 import AnimatedSection from '@/components/layout/AnimatedSection.vue'
 import {useRoute, useRouter} from "vue-router";
 import { useQuizStore } from '@/stores/quiz'
+import { computed } from 'vue';
 
 const router = useRouter()
 const route = useRoute()
 const store = useQuizStore()
 
-function nextQuestion() {
+function next() {
   if (store.state === 'result') {
     router.push({name: 'home'})
+  } else if (!store.hasRespondedCurrentQuestion) {
+    store.saveAnswer(store.selectedIndex)
   } else if (store.hasNextIndex) {
     store.index++
+    store.selectedIndex = -1
   } else {
     store.state = "result"
   }
 }
+
+const canNext = computed(() => {
+  console.log(store.state, store.selectedIndex)
+  if (store.state === 'quiz' && store.selectedIndex === -1) return false
+  else return true
+})
 </script>
 
 <template>
@@ -35,9 +45,9 @@ function nextQuestion() {
       </div>
       <div class="justify-self-center">
         <Button 
-          @click="nextQuestion" 
+          @click="next"
           class="transition-all" 
-          :class="{'opacity-50 pointer-events-none': store.state ==='quiz' && !store.hasRespondedCurrentQuestion}"
+          :class="{'opacity-50 pointer-events-none': !canNext}"
         >
           <template v-if="store.state === 'quiz'">Suivant</template>
           <template v-if="store.state === 'result'">Page d'accueil</template>

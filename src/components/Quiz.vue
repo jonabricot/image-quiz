@@ -7,29 +7,18 @@ import { computed, ref } from 'vue'
 const props = defineProps<{
   answers: {src: string, scale: number, translate: number[]}[],
   response: number,
+  state: string
 }>()
-const emit = defineEmits(['save'])
+const emit = defineEmits(['select'])
 
-const selected = ref<number | null>(null)
-const state = ref('idle')
+const selected = ref(-1)
+// const state = ref('idle')
 
-function select(index: number | null) {
-  if (state.value === 'result') return
-
-  if (index === null) {
-    state.value = 'idle'
-    selected.value = null
-    return
-  }
-
-  if (selected.value === index) {
-    state.value = 'result'
-    emit('save', index)
-  } else {
-    state.value = 'selected'
-  }
+function select(index: number) {
+  if (props.state === 'result') return
 
   selected.value = index
+  emit('select', index)
 }
 
 function computedOutline(index: number) {
@@ -37,7 +26,7 @@ function computedOutline(index: number) {
     return 'none'
   }
 
-  if (state.value === 'selected') {
+  if (props.state !== 'result') {
     return 'default'
   }
 
@@ -49,11 +38,11 @@ function computedOutline(index: number) {
 }
 
 function computedMuted(index: number) {
-  if (state.value === 'result') {
+  if (props.state === 'result') {
     return props.response !== index
   }
 
-  if (state.value === 'selected') {
+  if (props.state === 'selected') {
     return selected.value !== index
   }
 
@@ -62,8 +51,8 @@ function computedMuted(index: number) {
 
 function computedSize(index: number) {
   if (
-    state.value === 'selected' && index === selected.value ||
-    state.value === 'result' && index === props.response
+    props.state === 'selected' && index === selected.value ||
+    props.state === 'result' && index === props.response
   ) {
     return 'scale-105'
   }
@@ -86,18 +75,8 @@ function computedSize(index: number) {
         :display="state"
         tabindex="0"
         :class="[computedSize(index)]"
-        @click="select(index)"
-        @focusout="select(null)"
-      >
-        <Button
-          class="rounded-full absolute place-self-center transition-all opacity-0 pointer-events-none"
-          :class="{
-            'opacity-100': selected === index && state === 'selected',
-          }"
-        >
-          Choisir
-        </Button>
-      </QuizOption>
+        @focusin="select(index)"
+      />
       <div v-if="index < answers.length - 1">VS</div>
     </template>
   </QuizContainer>

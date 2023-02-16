@@ -9,12 +9,14 @@ const availableOutlines = {
 
 const props = withDefaults(defineProps<{
   src: string;
+  transform: string;
   scale: number;
   translate: number[];
   outline: keyof typeof availableOutlines;
   muted: boolean;
   display: string;
 }>(), {
+  transform: '',
   scale: 1,
   translate: () => [0, 0],
 });
@@ -27,7 +29,7 @@ const outlineBasis = 'outline outline-2 outline-offset-4 outline-solid'
 
 
 const computedOutline = computed(() => {
-  if (availableOutlines.hasOwnProperty(props.outline)) {
+  if (availableOutlines.hasOwnProperty(props.outline) && availableOutlines[props.outline]) {
     return `${outlineBasis} ${availableOutlines[props.outline]}`
   }
 
@@ -37,15 +39,12 @@ const computedOutline = computed(() => {
 const computedStyle = computed(() => {
   let ratio = "33%"
   if (props.display === 'result') {
-    ratio = "60%"
+    ratio = "80%"
   } 
   return {
     "padding-bottom": ratio,
   }
 });
-const computedImageStyle = computed(() => ({
-  transform: `scale(${props.scale}) translate(${computedTranslate.value.join(", ")})`,
-}));
 </script>
 
 <template>
@@ -62,7 +61,7 @@ const computedImageStyle = computed(() => ({
       <img
         :src="src"
         class="object-cover object-center pointer-events-none transition-all duration-1000 min-w-full min-h-full"
-        :style="display === 'result' ? {} : computedImageStyle"
+        :style="display === 'result' ? {} : {transform: props.transform}"
       />
     </div>
     <slot />

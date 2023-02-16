@@ -9,7 +9,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <PageLayout class="bg-gray-700 text-white">
+  <PageLayout class="bg-gradient-to-br from-slate-700 to-slate-800 text-white">
     <RouterView :key="route.path" />
   </PageLayout>
 </template>
