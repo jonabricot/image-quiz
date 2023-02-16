@@ -8,6 +8,17 @@ import QuizLayout from '@/components/layout/QuizLayout.vue';
 import { useQuizStore } from '@/stores/quiz'
 
 const store = useQuizStore()
+
+function getQuizState(index) {
+  if (store.answers[index] !== undefined) {
+    return 'result'
+  }
+  else if (store.selectedIndex !== -1) {
+    return 'selected'
+  } 
+
+  return 'idle' 
+}
 </script>
 
 <template>
@@ -18,13 +29,14 @@ const store = useQuizStore()
           :show="index === store.index && store.state === 'quiz'"
           :before="index < store.index"
           :after="index > store.index"
+          class="flex overflow-auto"
         >
-          <Center>
-            <Quiz
-              v-bind="question"
-              @save="store.saveAnswer($event)"
-            />
-          </Center>
+          <Quiz
+            class="self-center"
+            v-bind="question"
+            :state="getQuizState(index)"
+            @select="store.selectedIndex = $event"
+          />
         </AnimatedSection>
       </template>
 
