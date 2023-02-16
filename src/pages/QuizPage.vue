@@ -29,7 +29,7 @@ function getQuizState(index: number) {
           :show="index === store.index && store.state === 'quiz'"
           :before="index < store.index"
           :after="index > store.index"
-          class="flex overflow-auto"
+          class="flex overflow-auto justify-center"
         >
           <Quiz
             class="self-center"
