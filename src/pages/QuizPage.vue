@@ -9,7 +9,7 @@ import { useQuizStore } from '@/stores/quiz'
 
 const store = useQuizStore()
 
-function getQuizState(index) {
+function getQuizState(index: number) {
   if (store.answers[index] !== undefined) {
     return 'result'
   }
